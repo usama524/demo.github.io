@@ -94,15 +94,20 @@ function register() {
         }
     };
 
-    navigator.credentials.create({ publicKey: options.publicKey  })
-  .then((credential) => {
-    console.log("Credential ID:", credential.id);
-    const publicKey = credential.response.getPublicKey(); // This is not a standard API method
-    console.log("Public Key:", publicKey);
-  })
-  .catch((error) => {
-    console.error("WebAuthn error:", error);
-  });}
+    navigator.credentials.create({ publicKey: options.publicKey })
+    .then((credential) => {
+        console.log("Credential ID:", credential.id);
+        // Access the raw response data
+        const rawResponse = credential.response;
+        // Extract public key and other information from raw response
+        const publicKey = rawResponse ? rawResponse.getPublicKey() : null;
+        console.log("Public Key:", publicKey);
+    })
+    .catch((error) => {
+        console.error("WebAuthn error:", error);
+    });
+}
+
 
 //     navigator.credentials.create({ publicKey: options.publicKey })
 //         .then((credential) => {
