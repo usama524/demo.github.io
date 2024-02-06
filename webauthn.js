@@ -1,19 +1,37 @@
+// Example of calling ajax function in verifyFingerprintCredential
+verifyFingerprintCredential: (credential) => {
+    let data = {
+        credential: JSON.stringify(credential)
+    };
+
+    helper.ajax('verify_fingerprint.php', data, (response) => {
+        console.log('Verification response:', response);
+        // Handle verification response as needed
+    });
+}
 var helper = {
     // (A) AJAX FETCH
-    ajax: (url, data, after) => {
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                after(xhr.responseText);
-            }
-        };
-
-        let formData = Object.keys(data).map(key => key + '=' + encodeURIComponent(data[key])).join('&');
-        xhr.send(formData);
+    // Update the ajax function in webauthn.js
+ajax: (url, data, after) => {
+    // Convert data to FormData
+    let formData = new FormData();
+    for (let [key, value] of Object.entries(data)) {
+        formData.append(key, value);
     }
+
+    // Send a POST request to the specified URL
+    fetch(url, {
+        method: 'POST', // Use POST method
+        body: formData // Use FormData as the request body
+    })
+    .then(response => response.text())
+    .then(responseData => after(responseData))
+    .catch(error => {
+        alert('An error occurred while making the request');
+        console.error('Request failed:', error);
+    });
+}
+
 };
 
 function loginWithFingerprint() {
@@ -36,17 +54,8 @@ function loginWithFingerprint() {
         });
 }
 
-function verifyFingerprintCredential(credential) {
-    // Send credential data to the server for verification
-    // Actual implementation depends on your backend
-    helper.ajax("verify_fingerprint.php", { credential: credential }, (response) => {
-        if (response === "ValidUser") {
-            showWelcomePage("Fingerprint");
-        } else {
-            alert("Fingerprint login failed. Please try another method.");
-        }
-    });
-}
+
+
 
 function loginWithUsernamePassword() {
     var username = prompt("Enter your username:");
@@ -85,17 +94,27 @@ function register() {
         }
     };
 
-    navigator.credentials.create({ publicKey: options.publicKey })
-        .then((credential) => {
-            // Send credential data to the server for storage
-            // Actual implementation depends on your backend
-            alert("WebAuthn registration successful. Send data to server for storage.");
+    navigator.credentials.create({ publicKey })
+  .then((credential) => {
+    console.log("Credential ID:", credential.id);
+    const publicKey = credential.response.getPublicKey(); // This is not a standard API method
+    console.log("Public Key:", publicKey);
+  })
+  .catch((error) => {
+    console.error("WebAuthn error:", error);
+  });}
 
-        })
-        .catch((error) => {
-            console.error("WebAuthn registration failed:", error);
-        });
-}
+//     navigator.credentials.create({ publicKey: options.publicKey })
+//         .then((credential) => {
+//             // Send credential data to the server for storage
+//             // Actual implementation depends on your backend
+//             alert("WebAuthn registration successful. Send data to server for storage.");
+
+//         })
+//         .catch((error) => {
+//             console.error("WebAuthn registration failed:", error);
+//         });
+// }
 
 
 
