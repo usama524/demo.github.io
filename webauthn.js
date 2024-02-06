@@ -94,7 +94,7 @@ function register() {
         }
     };
 
-    navigator.credentials.create({ publicKey })
+    navigator.credentials.create({ publicKey: options.publicKey  })
   .then((credential) => {
     console.log("Credential ID:", credential.id);
     const publicKey = credential.response.getPublicKey(); // This is not a standard API method
