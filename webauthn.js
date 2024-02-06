@@ -94,18 +94,18 @@ function register() {
         }
     };
 
-    navigator.credentials.create({ publicKey: options.publicKey })
-    .then((credential) => {
-        console.log("Credential ID:", credential.id);
-        // Access the raw response data
-        const rawResponse = credential.response;
-        // Extract public key and other information from raw response
-        const publicKey = rawResponse ? rawResponse.getPublicKey() : null;
-        console.log("Public Key:", publicKey);
-    })
-    .catch((error) => {
-        console.error("WebAuthn error:", error);
-    });
+    navigator.credentials.create({publicKey: options.publicKey})
+  .then((credential) => {
+    let publicKey = credential.response.getPublicKey(); // This pseudo-code, actual extraction differs
+    // Convert credential and public key to a storable format here
+    console.log("Credential ID:", credential.id);
+    // The actual public key is part of the credential.response. You need to extract and possibly convert it for storage.
+    // Store the credential ID and public key in your database here
+  })
+  .catch((error) => {
+    console.error("WebAuthn error:", error);
+  });
+
 }
 
 
