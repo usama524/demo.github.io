@@ -90,7 +90,7 @@ function register() {
                 requireResidentKey: false,
                 userVerification: "preferred"
             },
-            attestation: "none"
+            attestation: "none" 
         }
     };
 
