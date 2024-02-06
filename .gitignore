@@ -1,2 +1,4 @@
 
-vendor/lbuchs/webauthn/
+*.json
+*.lock
+*.php
