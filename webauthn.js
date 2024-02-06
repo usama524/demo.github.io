@@ -1,6 +1,6 @@
 // Example of calling ajax function in verifyFingerprintCredential
-verifyFingerprintCredential: (credential) => {
-    let data = {
+function verifyFingerprintCredential(credential) {
+    const data = {
         credential: JSON.stringify(credential)
     };
 
@@ -9,6 +9,7 @@ verifyFingerprintCredential: (credential) => {
         // Handle verification response as needed
     });
 }
+
 var helper = {
     // (A) AJAX FETCH
     // Update the ajax function in webauthn.js
