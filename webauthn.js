@@ -20,7 +20,10 @@ var helper = {
 };
 
 
+function showLocalStorage(){
+    alert(localStorage.getItem("webauthnCredentialId"));
 
+}
 
 // Function to handle fingerprint login
 function loginWithFingerprint() {
