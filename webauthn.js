@@ -20,9 +20,12 @@ var helper = {
 };
 
 
-function showLocalStorage(){
-    alert(localStorage.getItem("webauthnCredentialId"));
+function showLocalStorage() {
+    // Retrieve the value from local storage
+    const credentialId = localStorage.getItem("webauthnCredentialId");
 
+    // Show the value in an alert
+    alert("Value in Local Storage: " + credentialId);
 }
 
 // Function to handle fingerprint login
