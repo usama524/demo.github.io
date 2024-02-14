@@ -19,7 +19,7 @@ var helper = {
     }
 };
 
-// Attach loginWithFingerprint function to a button click event
+
 
 
 // Function to handle fingerprint login
