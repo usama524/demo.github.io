@@ -136,4 +136,4 @@ function showWelcomePage(method) {
 }
 
 // Prompt user to login with fingerprint
-loginWithFingerprint();
+
