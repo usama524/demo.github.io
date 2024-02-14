@@ -62,6 +62,8 @@ function base64ToArrayBuffer(base64) {
 function register() {
     // Perform WebAuthn registration
     localStorage.clear();
+
+    
     const options = {
         publicKey: {
             user: {
