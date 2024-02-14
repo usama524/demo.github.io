@@ -19,8 +19,18 @@ var helper = {
     }
 };
 
+// Attach loginWithFingerprint function to a button click event
+document.getElementById('fingerprintLoginButton').addEventListener('click', function() {
+    loginWithFingerprint();
+});
+
+// Function to handle fingerprint login
 function loginWithFingerprint() {
     const credentialIdBase64 = localStorage.getItem('webauthnCredentialId');
+    if (!credentialIdBase64) {
+        alert("No credential found. Please register first.");
+        return;
+    }
     const credentialId = base64ToArrayBuffer(credentialIdBase64);
 
     const options = {
@@ -38,11 +48,14 @@ function loginWithFingerprint() {
         .then((credential) => {
             // Credential verification logic...
             console.log("Login successful with credential:", credential);
+            showWelcomePage("Fingerprint");
         })
         .catch((error) => {
             console.error("WebAuthn login with fingerprint failed:", error);
+            alert("Fingerprint login failed. Please try another method.");
         });
 }
+
 
 // Helper function to convert Base64 to ArrayBuffer
 function base64ToArrayBuffer(base64) {
