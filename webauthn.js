@@ -20,9 +20,7 @@ var helper = {
 };
 
 // Attach loginWithFingerprint function to a button click event
-document.getElementById('fingerprintLoginButton').addEventListener('click', function() {
-    loginWithFingerprint();
-});
+
 
 // Function to handle fingerprint login
 function loginWithFingerprint() {
