@@ -1,75 +1,67 @@
-// Example of calling ajax function in verifyFingerprintCredential
-function verifyFingerprintCredential(credential) {
-    const data = {
-        credential: JSON.stringify(credential)
-    };
-
-    helper.ajax('verify_fingerprint.php', data, (response) => {
-        console.log('Verification response:', response);
-        // Handle verification response as needed
-    });
-}
-
 var helper = {
     // (A) AJAX FETCH
-    // Update the ajax function in webauthn.js
-ajax: (url, data, after) => {
-    // Convert data to FormData
-    let formData = new FormData();
-    for (let [key, value] of Object.entries(data)) {
-        formData.append(key, value);
+    ajax: (url, data, after) => {
+        let formData = new FormData();
+        for (let [key, value] of Object.entries(data)) {
+            formData.append(key, value);
+        }
+
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(responseData => after(responseData))
+        .catch(error => {
+            alert('An error occurred while making the request');
+            console.error('Request failed:', error);
+        });
     }
-
-    // Send a POST request to the specified URL
-    fetch(url, {
-        method: 'POST', // Use POST method
-        body: formData // Use FormData as the request body
-    })
-    .then(response => response.text())
-    .then(responseData => after(responseData))
-    .catch(error => {
-        alert('An error occurred while making the request');
-        console.error('Request failed:', error);
-    });
-}
-
 };
 
 function loginWithFingerprint() {
-    // Perform WebAuthn login
+    const credentialIdBase64 = localStorage.getItem('webauthnCredentialId');
+    const credentialId = base64ToArrayBuffer(credentialIdBase64);
+
     const options = {
         publicKey: {
-            challenge: new Uint8Array(32),
-            allowCredentials: [] // Add stored credentials if any
+            challenge: new Uint8Array([/* some challenge here */]),
+            allowCredentials: [{
+                id: credentialId,
+                type: 'public-key',
+            }],
+            userVerification: 'preferred'
         }
     };
 
     navigator.credentials.get(options)
         .then((credential) => {
-            // Send credential data to the server for verification
-            // Actual implementation depends on your backend
-            verifyFingerprintCredential(credential);
+            // Credential verification logic...
+            console.log("Login successful with credential:", credential);
         })
         .catch((error) => {
             console.error("WebAuthn login with fingerprint failed:", error);
         });
 }
 
-
-
-
-function loginWithUsernamePassword() {
-    var username = prompt("Enter your username:");
-    var password = prompt("Enter your password:");
-
-    // Perform login with username/password
-    // You can implement server-side logic to validate username and password
-
-    alert("Performing login with username/password. Actual implementation needed.");
+// Helper function to convert Base64 to ArrayBuffer
+function base64ToArrayBuffer(base64) {
+    var binary_string = window.atob(base64);
+    var len = binary_string.length;
+    var bytes = new Uint8Array(len);
+    for (var i = 0; i < len; i++) {
+        bytes[i] = binary_string.charCodeAt(i);
+    }
+    return bytes.buffer;
 }
+
+
+
+
 
 function register() {
     // Perform WebAuthn registration
+    localStorage.clear();
     const options = {
         publicKey: {
             user: {
@@ -95,34 +87,32 @@ function register() {
         }
     };
 
-    navigator.credentials.create({publicKey: options.publicKey})
-  .then((credential) => {
-    let publicKey = credential.response.getPublicKey(); // This pseudo-code, actual extraction differs
-    // Convert credential and public key to a storable format here
-    console.log("Credential ID:", credential.id);
-    // The actual public key is part of the credential.response. You need to extract and possibly convert it for storage.
-    // Store the credential ID and public key in your database here
-  })
-  .catch((error) => {
-    console.error("WebAuthn error:", error);
-  });
+    navigator.credentials.create({ publicKey: options.publicKey })
+    .then((credential) => {
+        // Conversion and storage logic here...
+        const credentialIdArrayBuffer = credential.rawId;
+        const credentialIdBase64 = arrayBufferToBase64(credentialIdArrayBuffer);
 
+        // Store the Base64-encoded credential ID in localStorage
+        localStorage.setItem('webauthnCredentialId', credentialIdBase64);
+        alert("WebAuthn registration successful. Credential stored in local storage.");
+    })
+    .catch((error) => {
+        console.error("WebAuthn registration failed:", error);
+    });
 }
 
+// Helper function to convert ArrayBuffer to Base64
+function arrayBufferToBase64(buffer) {
+let binary = '';
+let bytes = new Uint8Array(buffer);
+let len = bytes.byteLength;
+for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+}
+return window.btoa(binary);
 
-//     navigator.credentials.create({ publicKey: options.publicKey })
-//         .then((credential) => {
-//             // Send credential data to the server for storage
-//             // Actual implementation depends on your backend
-//             alert("WebAuthn registration successful. Send data to server for storage.");
-
-//         })
-//         .catch((error) => {
-//             console.error("WebAuthn registration failed:", error);
-//         });
-// }
-
-
+}
 
 
 
@@ -131,3 +121,6 @@ function showWelcomePage(method) {
     document.getElementById('welcomePage').style.display = 'block';
     document.getElementById('welcomeMessage').innerText = `Welcome! You have successfully logged in using ${method}.`;
 }
+
+// Prompt user to login with fingerprint
+loginWithFingerprint();
