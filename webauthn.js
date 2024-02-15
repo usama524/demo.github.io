@@ -91,7 +91,7 @@ function register() {
             challenge: new Uint8Array(32),
             rp: {
                 name: "WebAuthn Demo",
-                //id: //window.location.hostname
+                id: window.location.hostname
             },
             pubKeyCredParams: [
                 { type: "public-key", alg: -7 }, // ES256
