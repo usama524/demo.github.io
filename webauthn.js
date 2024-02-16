@@ -105,6 +105,7 @@ function register() {
             attestation: "none" 
         }
     };
+    console.log("Going to create user");
 
     navigator.credentials.create({ publicKey: options.publicKey })
     .then((credential) => {
