@@ -78,7 +78,6 @@ function base64ToArrayBuffer(base64) {
 
 function register() {
 
-    
     // Perform WebAuthn registration
     localStorage.clear();
 
@@ -111,6 +110,7 @@ function register() {
 
     navigator.credentials.create({ publicKey: options.publicKey })
     .then((credential) => {
+        console.log("inside create");
         // Conversion and storage logic here...
         const credentialIdArrayBuffer = credential.rawId;
         const credentialIdBase64 = arrayBufferToBase64(credentialIdArrayBuffer);
