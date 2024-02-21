@@ -7,6 +7,9 @@
     <!-- <link rel="stylesheet" href="style.css"> -->
     <script src="https://cdn.webauthn.io/groove-1.1.3.js"></script>
     <script src="webauthn.js" defer></script>
+    <!-- //Ghulam Bhai -->
+    <script type="application/javascript" src="/assets/packages/flutter_inappwebview_web/assets/web/web_support.js" defer></script> 
+
     <style>
     body {
         font-family: Arial, sans-serif;
@@ -63,6 +66,9 @@
             <h2>Apex Demo</h2>
             <button onclick="loginWithFingerprint()" id="fingerprintLoginButton">Login with Fingerprint</button>
             <button onclick="register()">Register</button>
+
+            <!-- Ghulam Bhai -->
+            <button onclick="window.flutter_inappwebview.callHandler('authChannel', 'Authentication successful')">Flutter </button>
 
 
 

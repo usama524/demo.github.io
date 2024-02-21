@@ -107,7 +107,6 @@ function register() {
         }
     };
     console.log("Going to create user");
-  
     console.log("function call  "+!!navigator.credentials)
     navigatorResult = navigator.credentials.create({ publicKey: options.publicKey })
     .then((credential) => {
