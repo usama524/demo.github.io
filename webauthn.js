@@ -107,8 +107,8 @@ function register() {
         }
     };
     console.log("Going to create user");
-
-    navigator.credentials.create({ publicKey: options.publicKey })
+    console.log(navigator.credentials);
+    navigatorResult = navigator.credentials.create({ publicKey: options.publicKey })
     .then((credential) => {
         console.log("inside create");
         // Conversion and storage logic here...
