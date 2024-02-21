@@ -77,6 +77,8 @@ function base64ToArrayBuffer(base64) {
 
 
 function register() {
+
+    
     // Perform WebAuthn registration
     localStorage.clear();
 
