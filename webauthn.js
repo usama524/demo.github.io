@@ -144,9 +144,12 @@ function showWelcomePage(method) {
     document.getElementById('welcomeMessage').innerText = `Welcome! You have successfully logged in using ${method}.`;
 }
 
+const button = document.getElementById('FlutterButton');
 
-
-
+button.addEventListener('click', function() {
+    // Log a message to the console when the button is clicked
+    Pay.postMessage("Authentication Succesful")
+});
 
 // Prompt user to login with fingerprint
 //loginWithFingerprint();
