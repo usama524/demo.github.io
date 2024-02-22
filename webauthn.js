@@ -151,5 +151,10 @@ button.addEventListener('click', function() {
     Pay.postMessage("Authentication Succesful")
 });
 
+function receiveMessageFromFlutter(message) {
+    document.getElementById('messageFromFlutter').innerText = message;
+  }
+
+
 // Prompt user to login with fingerprint
 //loginWithFingerprint();
